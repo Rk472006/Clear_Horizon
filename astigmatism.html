@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Astigmatism Grid Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(to bottom, #e3f2fd, #bbdefb); /* Blue gradient background */
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      color: #0d47a1; /* Dark blue text */
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 5px;
+      color: #0d47a1;
+      margin-top: -20px; /* Move heading slightly upwards */
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 10px; /* Reduced gap between the grid and steps */
+      margin-top: 20px;
+      flex-grow: 1;
+    }
+
+    .grid-container {
+      flex: 1;
+      max-width: 550px; /* Reduced the width of grid to make it smaller */
+      margin-right: -50px; /* Negative margin to move it closer to the right */
+    }
+
+    .steps-container {
+      flex: 1;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Align the steps to the top */
+      align-items: center;
+      height: 100%;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      margin: 0;
+    }
+
+    /* Style for the buttons */
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      color: white;
+      background-color: #0d47a1;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 5px; /* Space between buttons */
+      width: 150px; /* Ensures buttons are the same size */
+    }
+
+    button:hover {
+      background-color: #1565c0; /* Lighter blue on hover */
+    }
+
+    .instructions {
+      text-align: left;
+      text-align: justify;
+      line-height: 1.6;
+      font-size: 18px;
+      width: 80%;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Align the steps at the top */
+      align-items: center;
+    }
+
+    .instructions h3 {
+      color: #0d47a1;
+      font-size: 22px;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 1.5em;
+      color: #1565c0;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    /* Style for the sentence below the grid and steps combined */
+    .warning-text {
+      font-size: 1.2em;
+      text-align: center;
+      margin-top: 30px; /* Adds space between the grid/steps and the sentence */
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    /* Container to align buttons horizontally */
+    .button-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px; /* Space between buttons */
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Astigmatism Grid Test</h1>
+
+  <!-- Container for the grid and steps side by side -->
+  <div class="container">
+    
+    <!-- Grid Image on the left side -->
+    <div class="grid-container">
+      <img id="image" src="https://www.aao.org/image.axd?id=4a0d828b-c698-47cf-9455-e265332e7968&t=635998033438800000" alt="Grid Image for Astigmatism Test">
+    </div>
+
+    <!-- Steps Section on the right side -->
+    <div class="steps-container">
+      <div class="instructions">
+        <h3>Steps to use grid:</h3>
+        <ol>
+          <li>Wear any glasses you normally use to read.</li>
+          <li>Hold the grid about 12 to 15 inches away from your face in good lighting.</li>
+          <li>Cover one eye.</li>
+          <li>Look directly at the center dot with your uncovered eye and keep your eye focused on it.</li>
+          <li>While looking at the center dot, notice in your side vision if all grid lines look straight or if any lines or areas look blurry, wavy, dark, or blank.</li>
+          <li>Follow the same steps with the other eye.</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sentence below the grid and steps combined, now styled as normal text -->
+  <p class="warning-text">If grid appears darker, wavy, blank, or blurry, click the button below.</p>
+
+  <!-- Buttons for checking myopia -->
+  <div class="button-container">
+    <a href="snellen.html"><button>Previous</button></a>
+    <button onclick="checkMyopia()">Yes, it's wavy</button>
+    <a href="blur_test.html"><button>Next</button></a>
+  </div>
+
+  <script>
+    // Variable to store the result, initially set to 0
+    let myopiaResult = 0;
+
+    // Function to simulate the check for myopia (sets the variable to 1)
+    function checkMyopia() {
+      // Update the value of the variable to 1 when the button is clicked
+      myopiaResult = 1;
+
+      // Optionally, you can log the result to the console for testing purposes
+      console.log('Myopia Result:', myopiaResult);
+
+      // Send the result to the server using a POST request
+      fetch('/submit-myopia-result', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ myopiaResult: myopiaResult })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log(data.message); // Handle response from the server
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,142 @@
+Updated home page with about us and tests pages 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Myopia Test/Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Global styles to match the Snellen Test page */
+        body {
+            font-family: "Arial", sans-serif;
+            background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #0d47a1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
+
+        p {
+            font-size: 1.2em;
+            color: #1565c0;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .span {
+            background-color: rgb(85, 128, 210); /* Soft blue background for navigation bar */
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            padding: 10px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            border: 2px solid #0d47a1;
+            border-radius: 7px;
+            margin: 10px;
+            background-color: #0d47a1; /* Deep teal button */
+            color: white;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #1565c0; /* Soft blue on hover */
+        }
+
+        .main {
+            margin-top: 20px;
+            margin-left: 100px;
+            margin-right: 100px;
+            text-align: left;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            font-size: 1.1em;
+            color: #0d47a1;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .footer button {
+            background-color: #0d47a1; /* Deep teal button */
+            height: 50px;
+            width: 150px;
+            font-size: 20px;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .footer button:hover {
+            background-color: #1565c0; /* Soft blue on hover */
+        }
+
+        .figure {
+            margin: 20px;
+            text-align: center;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #555; /* Gray text for footer */
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Home Page -->
+    <h1>ALGO EYE CARE</h1>
+    <div class="span">
+        <a href="home.html">
+            <button>Home</button>
+        </a>
+        <!-- Button linked to the About Us page -->
+        <a href="About_us.html">
+            <button>About Us</button>
+        </a>
+        <a href="Tests.html">
+            <button>Tests</button>
+        </a>
+        
+    </div>
+    <div class="figure">
+        <img src="myopia.jpeg" alt="Myopia Image">
+    </div>
+    <div class="main">
+        <p>Myopia, commonly known as nearsightedness, is a refractive error where distant objects appear blurry, while close objects can be seen clearly. The condition occurs when the eye's light is focused in front of the retina rather than directly on it. Symptoms include blurred vision at a distance, frequent squinting, eye strain, difficulty seeing at night, and the need for frequent changes in prescription glasses or contact lenses. Individuals with myopia may also experience discomfort, headaches, or fatigue, especially during prolonged close-up activities such as reading or using digital devices.</p>
+        <p>The primary causes of myopia are genetic and environmental. It often runs in families, meaning that children with myopic parents are at a higher risk. Additionally, environmental factors, such as excessive near-vision tasks like reading or screen time, can contribute to the condition. Myopia develops when the eyeball becomes too long or the cornea is too curved, causing light to focus incorrectly in front of the retina. These factors often combine to accelerate the onset and progression of the condition, particularly in children.</p>
+        <p>Myopia usually begins in childhood, typically between the ages of 6 and 14, as the eyes are still growing. It may stabilize in early adulthood, but in some cases, it can continue to worsen until the mid-20s. While myopia can develop at any age, it is most common during the formative years. Regular eye exams are essential to detect changes in vision early, and corrective measures such as glasses, contact lenses, or surgery can help manage the condition effectively.</p>
+    </div>
+    <div class="footer">
+        <button onclick="window.location.href='snellen.html'">Test Now</button>
+    </div>
+
+    <footer>
+        <p>Test your vision regularly. If in doubt, consult an eye care professional.</p>
+    </footer>
+
+</body>
+</html>

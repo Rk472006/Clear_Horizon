@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lifestyle Data for Myopia Risk</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: #0d47a1;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+      }
+
+      p {
+        font-size: 1em;
+        color: #1565c0;
+        margin-bottom: 20px;
+      }
+
+      .form-container {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 500px;
+        width: 100%;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+      }
+
+      input[type="range"] {
+        width: 100%;
+      }
+
+      input[type="number"],
+      select {
+        width: calc(100% - 30px);
+        padding: 8px;
+        font-size: 1em;
+        margin-top: 5px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .slider-value {
+        text-align: center;
+        font-weight: bold;
+        margin-top: 5px;
+        color: #0d47a1;
+      }
+
+      .submit-btn {
+        background: #0d47a1;
+        color: #ffffff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        font-size: 1.1em;
+        cursor: pointer;
+        transition: background 0.3s ease;
+      }
+
+      .submit-btn:hover {
+        background: #1565c0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Log Your Lifestyle Habits</h1>
+    <p>
+      Fill out the form below to provide information about your daily habits
+      that may influence myopia risk.
+    </p>
+
+    <div class="form-container">
+      <form id="lifestyle-form">
+        <div class="form-group">
+          <label for="screen-time"
+            >Daily Screen Time Usage (hours per day):</label
+          >
+          <input
+            type="range"
+            id="screen-time"
+            name="screen-time"
+            min="0"
+            max="12"
+            value="4"
+            step="1"
+            oninput="updateSliderValue('screen-time-value', this.value)"
+          />
+          <div class="slider-value" id="screen-time-value">4 hours</div>
+        </div>
+
+        <div class="form-group">
+          <label for="outdoor-time">Outdoor Activity (hours per day):</label>
+          <input
+            type="range"
+            id="outdoor-time"
+            name="outdoor-time"
+            min="0"
+            max="12"
+            value="2"
+            step="1"
+            oninput="updateSliderValue('outdoor-time-value', this.value)"
+          />
+          <div class="slider-value" id="outdoor-time-value">2 hours</div>
+        </div>
+
+        <div class="form-group">
+          <label for="reading-distance"
+            >Average Reading Distance (in cm):</label
+          >
+          <input
+            type="number"
+            id="reading-distance"
+            name="reading-distance"
+            placeholder="Enter distance in cm"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="posture">Posture Habit:</label>
+          <select id="posture" name="posture">
+            <option value="good">Good Posture</option>
+            <option value="moderate">Moderate Posture</option>
+            <option value="poor">Poor Posture</option>
+          </select>
+        </div>
+
+        <button type="submit" class="submit-btn" >Submit</button>
+      </form>
+    </div>
+
+    <script>
+      function updateSliderValue(elementId, value) {
+        document.getElementById(elementId).innerText = `${value} hours`;
+      }
+
+      document
+        .getElementById("lifestyle-form")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+          const data = {
+            screenTime: document.getElementById("screen-time").value,
+            outdoorTime: document.getElementById("outdoor-time").value,
+            readingDistance: document.getElementById("reading-distance").value,
+            posture: document.getElementById("posture").value,
+          };
+
+        
+          const response = await fetch("http://127.0.0.1:5000/submit-data", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+          alert(result.message);
+        });
+    </script>
+    
+  </body>
+</html>

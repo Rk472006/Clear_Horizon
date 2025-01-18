@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snellen Chart</title>
+    <style>
+        body {
+            font-family: "Arial", sans-serif;
+            background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: #0d47a1;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #0d47a1;
+        }
+
+        p {
+            font-size: 1em;
+            color: #1565c0;
+            margin-bottom: 20px;
+        }
+
+        #chart {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 600px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .snellen-line {
+            font-size: 2.5em;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: color 0.2s ease, background-color 0.2s ease;
+            color: #0d47a1;
+        }
+
+        .snellen-line:hover {
+            color: #f1faee;
+            background-color: #1565c0;
+            border-radius: 5px;
+        }
+
+        .snellen-line:nth-child(2) {
+            font-size: 2.3em;
+        }
+
+        .snellen-line:nth-child(3) {
+            font-size: 2em;
+        }
+
+        .snellen-line:nth-child(4) {
+            font-size: 1.8em;
+        }
+
+        .snellen-line:nth-child(5) {
+            font-size: 1.6em;
+        }
+
+        .snellen-line:nth-child(6) {
+            font-size: 1.4em;
+        }
+
+        .snellen-line:nth-child(7) {
+            font-size: 1.2em;
+        }
+
+        #result {
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #0d47a1;
+            text-align: center;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #0d47a1;
+            color: #ffffff;
+            font-size: 1.1em;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: #1565c0;
+        }
+
+        .btn-container {
+            width: 100%;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        footer {
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Snellen Test</h1>
+    <p>Please sit approximately 50 cm away from your screen and read the smallest line you can clearly see.</p>
+    
+    <div id="chart">
+        <div class="snellen-line">E</div>
+        <div class="snellen-line">F P</div>
+        <div class="snellen-line">T O Z</div>
+        <div class="snellen-line">L P E D</div>
+        <div class="snellen-line">P E C F D</div>
+        <div class="snellen-line">E D F C Z P</div>
+        <div class="snellen-line">F E L O P Z D</div>
+    </div>
+
+    <p>Click the smallest line you can read:</p>
+    
+    <!-- Result div moved above the buttons -->
+    <div id="result"></div>
+    
+    <!-- Button container with all buttons on the same line -->
+    <div class="btn-container">
+        <!-- Navigation Buttons -->
+        <a href="home.html">
+            <button class="btn">Previous</button>
+        </a>
+        <button class="btn" type="button" id="resetBtn">Reset</button>
+        <a href="astigmatism.html">
+            <button class="btn">Next</button>
+        </a>
+    </div>
+
+    <script>
+        let visualAcuity = 0;
+
+        document.getElementById('resetBtn').addEventListener('click', function() {
+            location.reload();  // Reload the page when the reset button is clicked
+        });
+
+        const lines = [
+            "20/200", "20/100", "20/70", "20/50", "20/40", "20/30", "20/20"
+        ];
+
+        document.querySelectorAll('.snellen-line').forEach((line, index) => {
+            line.addEventListener('click', () => {
+                // Store the visual acuity value in the variable
+                visualAcuity = lines[index];
+                document.getElementById('result').innerHTML = 
+                    `Your visual acuity is approximately: <strong>${visualAcuity}</strong>`;
+
+                // Send the Snellen score to Flask via fetch (AJAX)
+                fetch('/submit-data', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        snellenScore: visualAcuity  // Send only the Snellen score
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Response from Flask:', data);
+                    alert('Data submitted successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

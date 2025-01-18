@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blur Sensitivity Test</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        background: linear-gradient(to bottom, #e3f2fd, #bbdefb);
+        margin: 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        color: #0d47a1;
+      }
+
+      h1 {
+        font-size: 2.5em;
+        margin-bottom: 10px;
+        color: #0d47a1;
+      }
+
+      p {
+        font-size: 1em;
+        color: #1565c0;
+        margin-bottom: 20px;
+      }
+
+      #blur-test-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 0 auto;
+        width: 100%;
+        max-width: 600px;
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .blur-text {
+        font-size: 1.5em;
+        margin: 20px 0;
+        color: #0d47a1;
+        line-height: 1.5;
+        transition: filter 0.3s ease;
+        white-space: pre-wrap;
+      }
+
+      .blur-text[data-blur="0"] {
+        filter: blur(0px);
+      }
+
+      .blur-text[data-blur="1"] {
+        filter: blur(1px);
+      }
+
+      .blur-text[data-blur="2"] {
+        filter: blur(2px);
+      }
+
+      .blur-text[data-blur="3"] {
+        filter: blur(3px);
+      }
+
+      .blur-text[data-blur="4"] {
+        filter: blur(4px);
+      }
+
+      .blur-text[data-blur="5"] {
+        filter: blur(5px);
+      }
+
+      .blur-text[data-blur="6"] {
+        filter: blur(6px);
+      }
+
+      .blur-text[data-blur="7"] {
+        filter: blur(7px);
+      }
+
+      .blur-text[data-blur="8"] {
+        filter: blur(8px);
+      }
+
+      .blur-text[data-blur="9"] {
+        filter: blur(9px);
+      }
+
+      #result {
+        font-size: 1.5em;
+        font-weight: bold;
+        margin-top: 20px;
+        color: #0d47a1;
+      }
+
+      .btn {
+        padding: 10px 20px;
+        background: #0d47a1;
+        color: #ffffff;
+        font-size: 1.1em;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.3s ease;
+        margin-top: 20px;
+      }
+
+      .btn:hover {
+        background: #1565c0;
+      }
+
+      /* Buttons at the bottom */
+      .btn-container {
+        position: fixed;
+        bottom: 5px;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        padding: 0px 20px;
+      }
+
+      footer {
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #555;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Blur Sensitivity Test</h1>
+    <p>
+      Click on the text when it becomes clear enough for you to read. The blur
+      level will decrease with each click.
+    </p>
+
+    <div id="blur-test-container">
+      <div class="blur-text" data-blur="6">
+        Eye is the most sensitive organ of the human body.<br />
+        Please take care of it.
+      </div>
+    </div>
+
+    <div id="result"></div>
+
+    <!-- New button to store the final score -->
+    <button class="btn" type="button" id="storeScoreBtn">
+      Store Final Score
+    </button>
+
+    <script>
+      // Declare initial score and totalClicks
+      let totalClicks = 0;
+      let score = 10; // Default score
+
+      // Declare the final score variable, initially set to 10
+      let finalScore = 10;
+
+      // Query the blur-text element
+      const blurTextElement = document.querySelector(".blur-text");
+
+      // Function to update the score display
+      function updateScore() {
+        score = 10 - totalClicks; // Calculate score based on clicks
+        document.getElementById(
+          "result"
+        ).innerHTML = `Your blur sensitivity score is: <strong>${score}</strong> out of 10`;
+      }
+
+      // Add click event listener to the blur-text element
+      blurTextElement.addEventListener("click", () => {
+        let currentBlur = parseInt(blurTextElement.getAttribute("data-blur"));
+
+        // Decrease the blur level by 1
+        if (currentBlur > 0) {
+          currentBlur -= 1;
+          blurTextElement.setAttribute("data-blur", currentBlur);
+          totalClicks++;
+        }
+
+        // Update the score after every click
+        updateScore();
+      });
+
+      // Add click event listener to the new button for storing final score
+      document
+        .getElementById("storeScoreBtn")
+        .addEventListener("click", function () {
+          // Store the current score as the final score
+          finalScore = score;
+
+          // Log the final score to the console
+          console.log("Final Score:", finalScore);
+
+          // Optionally display it on the screen
+          document.getElementById(
+            "result"
+          ).innerHTML = `Your final blur sensitivity score is: <strong>${finalScore}</strong> out of 10`;
+
+          // Send final score to Flask backend via AJAX (fetch)
+          fetch("/submit-data", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              blurScore: finalScore, // Send only the blur score
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Response from Flask:", data);
+              alert("Data submitted successfully!");
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+    </script>
+
+    <!-- Navigation Buttons -->
+    <div class="btn-container">
+      <a href="astigmatism.html">
+        <button class="btn">Previous</button>
+      </a>
+      <a href="personal.html">
+        <button class="btn">Next</button>
+      </a>
+    </div>
+  </body>
+</html>
